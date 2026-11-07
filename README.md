@@ -35,3 +35,7 @@ database
 >>>Введите команду: drop_table users
 Таблица "users" успешно удалена.
 ```
+
+## Демонстрация
+
+[![asciicast](https://asciinema.org/a/N8NoZPI8zFyzCgf1.svg)](https://asciinema.org/a/N8NoZPI8zFyzCgf1)

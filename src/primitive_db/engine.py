@@ -178,9 +178,11 @@ def run_delete(metadata, user_input):
     where = parse_condition(where_text)
     table_data = load_table_data(table_name)
     ids = [row["ID"] for row in select(table_data, where)]
-    save_table_data(table_name, delete(table_data, where))
-    for i in ids:
-        print(f'Запись с ID={i} успешно удалена из таблицы "{table_name}".')
+    result = delete(table_data, where)
+    if result is not None:
+        save_table_data(table_name, result)
+        for i in ids:
+            print(f'Запись с ID={i} успешно удалена из таблицы "{table_name}".')
 
 
 def run_info(metadata, table_name):

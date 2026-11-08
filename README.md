@@ -56,4 +56,4 @@ database
 
 ## Демонстрация
 
-[![asciicast](https://asciinema.org/a/TJpSpJcZVcDbetIj.svg)](https://asciinema.org/a/TJpSpJcZVcDbetIj)
+[![asciicast](https://asciinema.org/a/2ouVzLgExqkI0XgF.svg)](https://asciinema.org/a/2ouVzLgExqkI0XgF)

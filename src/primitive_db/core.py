@@ -96,3 +96,37 @@ def insert(metadata, table_name, values):
         f'в таблицу "{table_name}".'
     )
     return table_data
+
+
+def select(table_data, where_clause=None):
+    """Возвращает записи, соответствующие условию where_clause."""
+    if where_clause is None:
+        return table_data
+
+    result = []
+    for record in table_data:
+        if all(record.get(k) == v for k, v in where_clause.items()):
+            result.append(record)
+
+    return result
+
+
+def update(table_data, set_clause, where_clause):
+    """Обновляет записи, соответствующие условию where_clause."""
+    for record in table_data:
+        if all(record.get(k) == v for k, v in where_clause.items()):
+            record.update(set_clause)
+
+    return table_data
+
+
+def delete(table_data, where_clause):
+    """Удаляет записи, соответствующие условию where_clause."""
+    result = []
+    for record in table_data:
+        if not all(record.get(k) == v for k, v in where_clause.items()):
+            result.append(record)
+   
+    return result
+
+

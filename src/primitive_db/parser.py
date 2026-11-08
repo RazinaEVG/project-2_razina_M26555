@@ -21,7 +21,7 @@ def parse_condition(condition):
     for part in condition.split(","):
         key, value = part.split("=", 1)
         result[key.strip()] = parse_value(value)
-        
+
     return result
 
 

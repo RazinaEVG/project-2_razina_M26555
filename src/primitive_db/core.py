@@ -1,3 +1,4 @@
+from primitive_db.constants import VALID_TYPES
 from primitive_db.decorators import (
     confirm_action,
     create_cacher,
@@ -7,8 +8,6 @@ from primitive_db.decorators import (
 from primitive_db.utils import load_table_data
 
 select_cache = create_cacher()
-
-allowed_types = {"int", "str", "bool"}
 
 
 @handle_db_errors
@@ -26,7 +25,7 @@ def create_table(metadata, table_name, columns):
 
         name, data_type = column.split(":")
 
-        if not name or data_type not in allowed_types:
+        if not name or data_type not in VALID_TYPES:
             print(f"Некорректное значение: {column}. Попробуйте снова.")
             return None
 
@@ -38,8 +37,7 @@ def create_table(metadata, table_name, columns):
     metadata[table_name] = new_columns
 
     print(
-        f'Таблица "{table_name}" успешно создана '
-        f'со столбцами: {", ".join(new_columns)}'
+        f'Таблица "{table_name}" успешно создана со столбцами: {", ".join(new_columns)}'
     )
     return metadata
 
@@ -82,11 +80,11 @@ def insert(metadata, table_name, values):
             f"Ошибка: Количество значений не соответствует количеству столбцов "
             f'в таблице "{table_name}".'
         )
-        return None 
+        return None
 
     record = {}
     for column, value in zip(table_columns, values):
-        name, data_type = column.split(":") 
+        name, data_type = column.split(":")
 
         if data_type == "int" and type(value) is not int:
             print(f"Ошибка: Столбец '{name}' должен содержать int.")
@@ -94,21 +92,18 @@ def insert(metadata, table_name, values):
 
         if data_type == "str" and type(value) is not str:
             print(f"Ошибка: Столбец '{name}' должен содержать str.")
-            return None 
+            return None
 
         if data_type == "bool" and type(value) is not bool:
             print(f"Ошибка: Столбец '{name}' должен содержать bool.")
-            return None 
+            return None
 
         record[name] = value
 
     table_data = load_table_data(table_name)
     record["ID"] = max((row["ID"] for row in table_data), default=0) + 1
     table_data.append(record)
-    print(
-        f'Запись с ID={record["ID"]} успешно добавлена '
-        f'в таблицу "{table_name}".'
-    )
+    print(f'Запись с ID={record["ID"]} успешно добавлена в таблицу "{table_name}".')
     return table_data
 
 
@@ -148,5 +143,5 @@ def delete(table_data, where_clause):
     for record in table_data:
         if not all(record.get(k) == v for k, v in where_clause.items()):
             result.append(record)
-   
+
     return result

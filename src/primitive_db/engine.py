@@ -4,6 +4,7 @@ import shlex
 import prompt
 from prettytable import PrettyTable
 
+from primitive_db.constants import DATA_DIR, META_FILE
 from primitive_db.core import (
     create_table,
     delete,
@@ -21,16 +22,12 @@ from primitive_db.utils import (
     save_table_data,
 )
 
-META_FILE = "db_meta.json"
-
 
 def print_help():
-    """Prints the help message for the current mode."""
+    """Выводит справку по командам."""
     print("\n***Процесс работы с таблицей***")
     print("Функции:")
-    print(
-        "<command> create_table <имя_таблицы> <столбец1:тип> .. - создать таблицу"
-    )
+    print("<command> create_table <имя_таблицы> <столбец1:тип> .. - создать таблицу")
     print("<command> list_tables - показать список всех таблиц")
     print("<command> drop_table <имя_таблицы> - удалить таблицу")
     print("\n***Операции с данными***")
@@ -94,7 +91,7 @@ def run():
                 result = drop_table(metadata, params[0])
                 if result is not None:
                     save_metadata(META_FILE, result)
-                    data_file = os.path.join("data", f"{params[0]}.json")
+                    data_file = os.path.join(DATA_DIR, f"{params[0]}.json")
                     if os.path.exists(data_file):
                         os.remove(data_file)
             case "list_tables":
@@ -137,7 +134,7 @@ def table_exists(metadata, table_name):
 
 
 def run_insert(metadata, user_input):
-    # insert into users values ("Sergei", 28, true)
+    """Обрабатывает команду insert into <таблица> values (...)."""
     _, _, table_name, rest = user_input.split(maxsplit=3)
     values = parse_values(rest.removeprefix("values").strip().strip("()"))
     table_data = insert(metadata, table_name, values)
@@ -146,7 +143,7 @@ def run_insert(metadata, user_input):
 
 
 def run_select(metadata, user_input):
-    # select from users  /  select from users where age = 28
+    """Обрабатывает команду select from <таблица> [where <условие>]."""
     parts = user_input.split(maxsplit=4)
     table_name = parts[2]
     where = parse_condition(parts[4]) if len(parts) == 5 else None
@@ -156,7 +153,7 @@ def run_select(metadata, user_input):
 
 
 def run_update(metadata, user_input):
-    # update users set age = 29 where name = "Sergei"
+    """Обрабатывает команду update <таблица> set <поля> where <условие>."""
     _, table_name, _, rest = user_input.split(maxsplit=3)
     set_text, where_text = rest.split(" where ")
     if not table_exists(metadata, table_name):
@@ -171,7 +168,7 @@ def run_update(metadata, user_input):
 
 
 def run_delete(metadata, user_input):
-    # delete from users where ID = 1
+    """Обрабатывает команду delete from <таблица> where <условие>."""
     _, _, table_name, _, where_text = user_input.split(maxsplit=4)
     if not table_exists(metadata, table_name):
         return
@@ -186,6 +183,7 @@ def run_delete(metadata, user_input):
 
 
 def run_info(metadata, table_name):
+    """Выводит информацию о таблице: столбцы и количество записей."""
     if table_exists(metadata, table_name):
         print(f"Таблица: {table_name}")
         print(f"Столбцы: {', '.join(metadata[table_name])}")

@@ -1,6 +1,8 @@
 import json
 import os
 
+from primitive_db.constants import DATA_DIR
+
 
 def load_metadata(filepath):
     """Загружает метаданные из JSON-файла. Если файла нет, возвращает {}."""
@@ -19,7 +21,7 @@ def save_metadata(filepath, data):
 
 def load_table_data(table_name):
     """Загружает данные таблицы из JSON-файла."""
-    filepath = os.path.join("data", f"{table_name}.json")
+    filepath = os.path.join(DATA_DIR, f"{table_name}.json")
 
     try:
         with open(filepath, encoding="utf-8") as file:
@@ -30,9 +32,9 @@ def load_table_data(table_name):
 
 def save_table_data(table_name, data):
     """Сохраняет данные таблицы в JSON-файл."""
-    os.makedirs("data", exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
 
-    filepath = os.path.join("data", f"{table_name}.json")
+    filepath = os.path.join(DATA_DIR, f"{table_name}.json")
 
     with open(filepath, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=4)

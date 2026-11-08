@@ -1,5 +1,12 @@
-from primitive_db.decorators import confirm_action, handle_db_errors, log_time
+from primitive_db.decorators import (
+    confirm_action,
+    create_cacher,
+    handle_db_errors,
+    log_time,
+)
 from primitive_db.utils import load_table_data
+
+select_cache = create_cacher()
 
 allowed_types = {"int", "str", "bool"}
 
@@ -112,12 +119,15 @@ def select(table_data, where_clause=None):
     if where_clause is None:
         return table_data
 
-    result = []
-    for record in table_data:
-        if all(record.get(k) == v for k, v in where_clause.items()):
-            result.append(record)
+    def find():
+        result = []
+        for record in table_data:
+            if all(record.get(k) == v for k, v in where_clause.items()):
+                result.append(record)
+        return result
 
-    return result
+    key = str((table_data, where_clause))
+    return select_cache(key, find)
 
 
 @handle_db_errors

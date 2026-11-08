@@ -1,3 +1,4 @@
+import time
 from functools import wraps
 
 
@@ -37,3 +38,17 @@ def confirm_action(action_name):
         return wrapper
 
     return decorator
+
+
+def log_time(func):
+    """Замеряет время выполнения функции."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.monotonic()
+        result = func(*args, **kwargs)
+        elapsed = time.monotonic() - start
+        print(f"Функция {func.__name__} выполнилась за {elapsed:.3f} секунд")
+        return result
+
+    return wrapper

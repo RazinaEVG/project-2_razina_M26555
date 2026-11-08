@@ -1,4 +1,4 @@
-from primitive_db.decorators import confirm_action, handle_db_errors
+from primitive_db.decorators import confirm_action, handle_db_errors, log_time
 from primitive_db.utils import load_table_data
 
 allowed_types = {"int", "str", "bool"}
@@ -61,6 +61,7 @@ def list_tables(metadata):
 
 
 @handle_db_errors
+@log_time
 def insert(metadata, table_name, values):
     """Добавляет запись. Возвращает данные таблицы или None при ошибке."""
     if table_name not in metadata:
@@ -105,6 +106,7 @@ def insert(metadata, table_name, values):
 
 
 @handle_db_errors
+@log_time
 def select(table_data, where_clause=None):
     """Возвращает записи, соответствующие условию where_clause."""
     if where_clause is None:

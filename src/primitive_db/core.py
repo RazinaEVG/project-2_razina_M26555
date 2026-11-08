@@ -1,3 +1,5 @@
+from primitive_db.utils import load_table_data
+
 allowed_types = {"int", "str", "bool"}
 
 def create_table(metadata, table_name, columns):
@@ -51,3 +53,46 @@ def list_tables(metadata):
 
     for table_name in metadata:
         print(f"- {table_name}")
+
+
+def insert(metadata, table_name, values):
+    """Добавляет запись. Возвращает данные таблицы или None при ошибке."""
+    if table_name not in metadata:
+        print(f'Ошибка: Таблица "{table_name}" не существует.')
+        return None
+
+    table_columns = metadata[table_name][1:]
+
+    if len(values) != len(table_columns):
+        print(
+            f"Ошибка: Количество значений не соответствует количеству столбцов "
+            f'в таблице "{table_name}".'
+        )
+        return None 
+
+    record = {}
+    for column, value in zip(table_columns, values):
+        name, data_type = column.split(":") 
+
+        if data_type == "int" and type(value) is not int:
+            print(f"Ошибка: Столбец '{name}' должен содержать int.")
+            return None
+
+        if data_type == "str" and type(value) is not str:
+            print(f"Ошибка: Столбец '{name}' должен содержать str.")
+            return None 
+
+        if data_type == "bool" and type(value) is not bool:
+            print(f"Ошибка: Столбец '{name}' должен содержать bool.")
+            return None 
+
+        record[name] = value
+
+    table_data = load_table_data(table_name)
+    record["ID"] = max((row["ID"] for row in table_data), default=0) + 1
+    table_data.append(record)
+    print(
+        f'Запись с ID={record["ID"]} успешно добавлена '
+        f'в таблицу "{table_name}".'
+    )
+    return table_data

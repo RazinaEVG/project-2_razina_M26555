@@ -36,6 +36,17 @@ database
 Таблица "users" успешно удалена.
 ```
 
+## CRUD-операции
+
+Строковые значения указываются в кавычках, `true`/`false` — логические, числа — без кавычек. ID задаётся автоматически.
+
+- `insert into <таблица> values (<значение1>, <значение2>, ...)` — добавить запись.
+- `select from <таблица>` — показать все записи.
+- `select from <таблица> where <столбец> = <значение>` — показать записи по условию.
+- `update <таблица> set <столбец> = <значение> where <столбец> = <значение>` — обновить записи.
+- `delete from <таблица> where <столбец> = <значение>` — удалить записи.
+- `info <таблица>` — информация о таблице.
+
 ## Демонстрация
 
-[![asciicast](https://asciinema.org/a/N8NoZPI8zFyzCgf1.svg)](https://asciinema.org/a/N8NoZPI8zFyzCgf1)
+[![asciicast](https://asciinema.org/a/NYSGr7SNG65FtvVh.svg)](https://asciinema.org/a/NYSGr7SNG65FtvVh)

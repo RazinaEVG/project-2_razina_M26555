@@ -53,6 +53,7 @@ database
 - **Подтверждение действий** — перед `drop_table` и `delete` программа спрашивает `[y/n]`; при ответе не `y` операция отменяется.
 - **Замер времени** — `insert` и `select` выводят время выполнения.
 - **Кэширование** — повторные одинаковые запросы `select` берутся из кэша.
+
 ## Демонстрация
 
-[![asciicast](https://asciinema.org/a/NYSGr7SNG65FtvVh.svg)](https://asciinema.org/a/NYSGr7SNG65FtvVh)
+[![asciicast](https://asciinema.org/a/TJpSpJcZVcDbetIj.svg)](https://asciinema.org/a/TJpSpJcZVcDbetIj)

@@ -27,9 +27,7 @@ def confirm_action(action_name):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            answer = input(
-                f'Вы уверены, что хотите выполнить "{action_name}"? [y/n]: '
-            )
+            answer = input(f'Вы уверены, что хотите выполнить "{action_name}"? [y/n]: ')
             if answer.strip().lower() != "y":
                 print("Операция отменена.")
                 return None
@@ -66,4 +64,3 @@ def create_cacher():
         return result
 
     return cache_result
-

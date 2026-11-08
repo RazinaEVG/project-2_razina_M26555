@@ -4,6 +4,7 @@ import shlex
 import prompt
 from prettytable import PrettyTable
 
+from primitive_db.constants import DATA_DIR, META_FILE
 from primitive_db.core import (
     create_table,
     delete,
@@ -21,16 +22,12 @@ from primitive_db.utils import (
     save_table_data,
 )
 
-META_FILE = "db_meta.json"
-
 
 def print_help():
     """Prints the help message for the current mode."""
     print("\n***Процесс работы с таблицей***")
     print("Функции:")
-    print(
-        "<command> create_table <имя_таблицы> <столбец1:тип> .. - создать таблицу"
-    )
+    print("<command> create_table <имя_таблицы> <столбец1:тип> .. - создать таблицу")
     print("<command> list_tables - показать список всех таблиц")
     print("<command> drop_table <имя_таблицы> - удалить таблицу")
     print("\n***Операции с данными***")
@@ -94,7 +91,7 @@ def run():
                 result = drop_table(metadata, params[0])
                 if result is not None:
                     save_metadata(META_FILE, result)
-                    data_file = os.path.join("data", f"{params[0]}.json")
+                    data_file = os.path.join(DATA_DIR, f"{params[0]}.json")
                     if os.path.exists(data_file):
                         os.remove(data_file)
             case "list_tables":
